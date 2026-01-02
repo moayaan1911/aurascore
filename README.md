@@ -29,6 +29,16 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## TODO - Before Deployment
+
+Before deploying to production, implement these security and scalability improvements for `/api/get-chain-activity`:
+
+- [ ] **Wallet Address Validation** - Validate that walletAddress is a valid Ethereum address format (0x + 40 hex characters)
+- [ ] **Caching** - Use Next.js built-in Data Cache with `revalidate` option in fetch call (e.g., `next: { revalidate: 300 }`) to cache responses for 5 minutes
+- [ ] **Request Timeout** - Add timeout to fetch call to prevent hanging requests and resource exhaustion
+- [ ] **Rate Limiting** - Implement rate limiting per IP/user to prevent abuse and unexpected API costs
+- [ ] **API Key Exposure Prevention** - Sanitize error messages to prevent accidental leakage of sensitive data from Moralis responses
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
