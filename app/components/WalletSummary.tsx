@@ -14,6 +14,7 @@ import {
   FaSmile,
   FaMoneyBillWave,
   FaGasPump,
+  FaChartLine,
 } from "react-icons/fa";
 
 interface WalletSummaryProps {
@@ -42,6 +43,8 @@ interface WalletSummaryProps {
       total: number;
       highestChain: { chain: string; amount: number };
     };
+    totalTrades?: number;
+    totalProfit?: number;
   };
 }
 
@@ -70,6 +73,8 @@ const dummyData = {
     total: 303.03,
     highestChain: { chain: "ETH", amount: 285.65 },
   },
+  totalTrades: 45,
+  totalProfit: 1234.56,
 };
 
 export default function WalletSummary({
@@ -113,41 +118,73 @@ export default function WalletSummary({
       text: `Your wallet is ${data.walletAge} old.`,
     },
     {
-      icon: <FaLightbulb className="w-5 h-5 text-yellow-500" />,
+      icon: <FaShieldAlt className="w-5 h-5 text-yellow-500" />,
       text: `The total USD at risk from open token approvals is: $${data.usdAtRisk?.toFixed(
         2
       )}`,
     },
-    {
-      icon: <FaLayerGroup className="w-5 h-5 text-gray-400" />,
-      text: `Interacted with ${
-        data.defiProtocols?.count
-      } unique DeFi protocols (${data.defiProtocols?.names.join(", ")})`,
-    },
-    {
-      icon: <FaSmile className="w-5 h-5 text-yellow-500" />,
-      text: `Your highest DeFi position is a ${
-        data.highestDefiPosition?.type
-      } with ${data.highestDefiPosition?.token} on ${
-        data.highestDefiPosition?.protocol
-      } amounting to $${data.highestDefiPosition?.amount.toFixed(2)}`,
-    },
-    {
-      icon: <FaMoneyBillWave className="w-5 h-5 text-green-500" />,
-      text: `The total net worth is $${data.totalNetWorth?.total.toFixed(
-        2
-      )} with the highest funds on ${
-        data.totalNetWorth?.highestChain.chain
-      } amounting to $${data.totalNetWorth?.highestChain.amount.toFixed(2)}.`,
-    },
-    {
-      icon: <FaGasPump className="w-5 h-5 text-red-500" />,
-      text: `Total gas fees paid across all chains amounts to $${data.totalGasFees?.total.toFixed(
-        2
-      )}, with the highest paid on ${
-        data.totalGasFees?.highestChain.chain
-      } amounting to $${data.totalGasFees?.highestChain.amount.toFixed(2)}`,
-    },
+    ...(data.defiProtocols && data.defiProtocols.count > 0
+      ? [
+          {
+            icon: <FaLayerGroup className="w-5 h-5 text-gray-400" />,
+            text: `Interacted with ${
+              data.defiProtocols.count
+            } unique DeFi protocols (${data.defiProtocols.names.join(", ")})`,
+          },
+        ]
+      : []),
+    ...(data.highestDefiPosition
+      ? [
+          {
+            icon: <FaSmile className="w-5 h-5 text-yellow-500" />,
+            text: `Your highest DeFi position is a ${
+              data.highestDefiPosition.type
+            } with ${data.highestDefiPosition.token} on ${
+              data.highestDefiPosition.protocol
+            } amounting to $${data.highestDefiPosition.amount.toFixed(2)}`,
+          },
+        ]
+      : []),
+    ...(data.totalNetWorth && data.totalNetWorth.total > 0
+      ? [
+          {
+            icon: <FaMoneyBillWave className="w-5 h-5 text-green-500" />,
+            text: `The total net worth is $${data.totalNetWorth.total.toFixed(
+              2
+            )} with the highest funds on ${
+              data.totalNetWorth.highestChain.chain
+            } amounting to $${data.totalNetWorth.highestChain.amount.toFixed(
+              2
+            )}.`,
+          },
+        ]
+      : []),
+    ...(data.totalTrades !== undefined && data.totalTrades > 0
+      ? [
+          {
+            icon: <FaChartLine className="w-5 h-5 text-blue-500" />,
+            text: `You have made a total of ${
+              data.totalTrades
+            } trades across Ethereum and Polygon with your net profit of $${(
+              data.totalProfit ?? 0
+            ).toFixed(2)}.`,
+          },
+        ]
+      : []),
+    ...(data.totalGasFees && data.totalGasFees.total > 0
+      ? [
+          {
+            icon: <FaGasPump className="w-5 h-5 text-red-500" />,
+            text: `Total gas fees paid across all chains amounts to $${data.totalGasFees.total.toFixed(
+              2
+            )}, with the highest paid on ${
+              data.totalGasFees.highestChain.chain
+            } amounting to $${data.totalGasFees.highestChain.amount.toFixed(
+              2
+            )}`,
+          },
+        ]
+      : []),
   ];
 
   return (

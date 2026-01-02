@@ -25,6 +25,8 @@ export async function POST(request: NextRequest) {
     }
 
     const url = `https://deep-index.moralis.io/api/v2.2/resolve/${domain}?currency=eth`;
+    console.log("Resolving Unstoppable domain:", domain, "URL:", url);
+
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -33,25 +35,39 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // If domain not found or any error from Moralis, return null address (not an error)
     if (!response.ok) {
-      const errorData = await response.json();
-      console.log("Moralis API error:", errorData);
-      return NextResponse.json(
-        { error: "Failed to resolve Unstoppable domain" },
-        { status: response.status }
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { message: "Unknown error" };
+      }
+      console.log(
+        "Moralis API response status:",
+        response.status,
+        "Error:",
+        errorData
       );
+
+      // Return null address for 404 (not found) - this is expected for non-existent domains
+      if (response.status === 404) {
+        return NextResponse.json({ address: null }, { status: 200 });
+      }
+
+      // For other errors, still return success but with null
+      return NextResponse.json({ address: null }, { status: 200 });
     }
 
     const data = await response.json();
+    console.log("Unstoppable domain resolution success:", data);
     return NextResponse.json(
       { address: data.address || null },
       { status: 200 }
     );
   } catch (error) {
     console.error("Error resolving Unstoppable domain:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    // Even on error, return null instead of 500 to let frontend handle it gracefully
+    return NextResponse.json({ address: null }, { status: 200 });
   }
 }

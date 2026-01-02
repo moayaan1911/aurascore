@@ -2,19 +2,130 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { isAddress } from "ethers";
+import toast, { Toaster } from "react-hot-toast";
 import Background3D from "./components/Background3D";
 import Header from "./components/Header";
 import Features from "./components/Features";
 import Footer from "./components/Footer";
-import { FaSearch, FaArrowRight } from "react-icons/fa";
+import { FaSearch, FaArrowRight, FaSpinner } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function Home() {
   const [address, setAddress] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleFetchScore = () => {
-    router.push("/summary");
+  // Resolve ENS domain to address
+  const resolveENS = async (domain: string): Promise<string | null> => {
+    try {
+      const response = await fetch("/api/resolve-ens", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to resolve ENS domain");
+      }
+
+      const data = await response.json();
+      return data.address || null;
+    } catch (error) {
+      console.error("Error resolving ENS domain:", error);
+      return null;
+    }
+  };
+
+  // Resolve Unstoppable domain to address
+  const resolveUnstoppable = async (domain: string): Promise<string | null> => {
+    try {
+      const response = await fetch("/api/resolve-unstoppable", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to resolve Unstoppable domain");
+      }
+
+      const data = await response.json();
+      return data.address || null;
+    } catch (error) {
+      console.error("Error resolving Unstoppable domain:", error);
+      return null;
+    }
+  };
+
+  const handleFetchScore = async () => {
+    const trimmedAddress = address.trim();
+
+    // Check if empty
+    if (!trimmedAddress) {
+      toast.error(
+        "Please enter a wallet address, ENS domain, or Unstoppable domain"
+      );
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      let resolvedAddress: string | null = null;
+
+      // Check if it's an ENS domain (.eth)
+      if (trimmedAddress.endsWith(".eth")) {
+        toast.loading("Resolving ENS domain...", { id: "resolving" });
+        resolvedAddress = await resolveENS(trimmedAddress);
+        toast.dismiss("resolving");
+
+        if (!resolvedAddress) {
+          toast.error("Invalid ENS domain. Could not resolve to an address.");
+          setIsLoading(false);
+          return;
+        }
+        toast.success(
+          `Resolved to ${resolvedAddress.slice(0, 6)}...${resolvedAddress.slice(
+            -4
+          )}`
+        );
+      }
+      // Check if it's a valid Ethereum address
+      else if (isAddress(trimmedAddress)) {
+        resolvedAddress = trimmedAddress;
+      }
+      // Otherwise, try resolving as Unstoppable domain
+      else {
+        toast.loading("Resolving domain...", { id: "resolving" });
+        resolvedAddress = await resolveUnstoppable(trimmedAddress);
+        toast.dismiss("resolving");
+
+        if (!resolvedAddress) {
+          toast.error("Invalid domain or address. Please check and try again.");
+          setIsLoading(false);
+          return;
+        }
+        toast.success(
+          `Resolved to ${resolvedAddress.slice(0, 6)}...${resolvedAddress.slice(
+            -4
+          )}`
+        );
+      }
+
+      // Navigate to summary page with the resolved address
+      router.push(`/summary?address=${resolvedAddress}`);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Something went wrong. Please try again.");
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !isLoading) {
+      handleFetchScore();
+    }
   };
 
   const containerVariants = {
@@ -40,6 +151,31 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative flex flex-col font-sans text-white overflow-hidden selection:bg-[#00ff88] selection:text-black">
+      {/* Toast Container */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: "#1a1a1a",
+            color: "#fff",
+            border: "1px solid rgba(0, 255, 136, 0.3)",
+          },
+          success: {
+            iconTheme: {
+              primary: "#00ff88",
+              secondary: "#000",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ff4444",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
+
       {/* 3D Background */}
       <Background3D />
 
@@ -67,14 +203,26 @@ export default function Home() {
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
+                  onKeyDown={handleKeyPress}
                   placeholder="Enter address / ENS domain / Unstoppable domain"
                   className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-gray-500 focus:outline-none focus:ring-0 text-lg font-mono"
+                  disabled={isLoading}
                 />
               </div>
               <button
                 onClick={handleFetchScore}
-                className="bg-[#00ff88] hover:bg-[#00cc66] text-black font-bold py-3 px-8 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transform hover:scale-105 active:scale-95 cursor-pointer">
-                Fetch Score <FaArrowRight />
+                disabled={isLoading}
+                className="bg-[#00ff88] hover:bg-[#00cc66] disabled:bg-gray-600 disabled:cursor-not-allowed text-black font-bold py-3 px-8 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] transform hover:scale-105 active:scale-95 cursor-pointer disabled:transform-none disabled:hover:shadow-none">
+                {isLoading ? (
+                  <>
+                    <FaSpinner className="animate-spin" />
+                    Resolving...
+                  </>
+                ) : (
+                  <>
+                    Fetch Score <FaArrowRight />
+                  </>
+                )}
               </button>
             </div>
           </motion.div>
