@@ -10,6 +10,9 @@ import WalletSummary from "../components/WalletSummary";
 import Score from "../components/Score";
 import Heatmap from "../components/Heatmap";
 import Footer from "../components/Footer";
+import { generateAuraScorePDF } from "../utils/generatePDF";
+import toast from "react-hot-toast";
+import confetti from "canvas-confetti";
 
 type HeatmapItem = { date: string; count: number };
 
@@ -426,6 +429,36 @@ function SummaryContent() {
     return () => clearInterval(intervalId);
   }, [walletAddress, fetchApi]);
 
+  const handleDownloadPDF = async () => {
+    if (!summaryData) {
+      toast.error("No data available to generate PDF");
+      return;
+    }
+
+    try {
+      toast.loading("Generating your AuraScore PDF...", { id: "pdf-generation" });
+      await generateAuraScorePDF(
+        walletAddress,
+        displayName,
+        score,
+        summaryData,
+        heatmapData
+      );
+      toast.success("PDF downloaded successfully! 🎉", { id: "pdf-generation", duration: 4000 });
+      
+      // Trigger confetti
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#00ff88', '#00cc6a', '#00aa55', '#ffffff'],
+      });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Failed to generate PDF. Please try again.", { id: "pdf-generation" });
+    }
+  };
+
   if (loading) {
     return (
       <main className="min-h-screen relative flex flex-col font-sans text-white overflow-hidden selection:bg-[#00ff88] selection:text-black">
@@ -478,6 +511,7 @@ function SummaryContent() {
         {/* Icons Below WalletSummary */}
         <div className="flex items-center gap-4 mt-8 mb-12">
           <button
+            onClick={handleDownloadPDF}
             className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group cursor-pointer overflow-hidden min-w-[48px]"
             aria-label="Download">
             <div className="flex items-center gap-0 group-hover:gap-3 transition-all duration-300">
