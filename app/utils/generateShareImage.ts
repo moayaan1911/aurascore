@@ -108,7 +108,11 @@ export async function generateShareImage(
         // Footer text
         ctx.fillStyle = "#00ff88";
         ctx.font = "bold 28px 'Space Grotesk', sans-serif";
-        ctx.fillText("Check your score at aurascore.vercel.app", 600, 640);
+        ctx.fillText(
+          "Check your score at https://onchain-aurascore.vercel.app/",
+          600,
+          640
+        );
 
         // Convert canvas to blob URL
         canvas.toBlob((blob) => {
@@ -148,7 +152,7 @@ export function downloadImage(blobUrl: string, filename: string) {
  * Opens Twitter share dialog with pre-filled text (no image download)
  */
 export function shareOnTwitter(score: number) {
-  const text = `🎉 My AuraScore is ${score}/100! 🚀\n\nCheck your onchain reputation score now! 📊\n\n#AuraScore #Web3 #Crypto #OnchainAnalytics\n\nhttps://aurascore.vercel.app`;
+  const text = `🎉 My AuraScore is ${score}/100! 🚀\n\nCheck your onchain reputation score now! 📊\n\n#AuraScore #Web3 #Crypto #OnchainAnalytics\n\nhttps://onchain-aurascore.vercel.app/`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     text
   )}`;
