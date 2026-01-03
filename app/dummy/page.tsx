@@ -127,7 +127,7 @@ export default function DummyPage() {
 
   const handleShareOnTwitter = () => {
     try {
-      shareOnTwitter(score, displayName);
+      shareOnTwitter(score);
       toast.success("Share your AuraScore on X! 🐦", { duration: 3000 });
       confetti({
         particleCount: 100,

@@ -56,7 +56,7 @@ export default function Header({ itemVariants }: HeaderProps) {
           rel="noopener noreferrer"
           className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group overflow-hidden min-w-[48px]">
           <div className="flex items-center gap-0 group-hover:gap-3 transition-all duration-300">
-            <FaGithub className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors flex-shrink-0" />
+            <FaGithub className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors shrink-0" />
             <span className="text-sm font-medium text-gray-400 group-hover:text-[#00ff88] transition-all whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 duration-300 overflow-hidden">
               Leave a Star
             </span>
@@ -68,7 +68,7 @@ export default function Header({ itemVariants }: HeaderProps) {
           rel="noopener noreferrer"
           className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group overflow-hidden min-w-[48px]">
           <div className="flex items-center gap-0 group-hover:gap-3 transition-all duration-300">
-            <SiPeerlist className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors flex-shrink-0" />
+            <SiPeerlist className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors shrink-0" />
             <span className="text-sm font-medium text-gray-400 group-hover:text-[#00ff88] transition-all whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 duration-300 overflow-hidden">
               Upvote on Peerlist
             </span>

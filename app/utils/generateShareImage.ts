@@ -147,7 +147,7 @@ export function downloadImage(blobUrl: string, filename: string) {
 /**
  * Opens Twitter share dialog with pre-filled text (no image download)
  */
-export function shareOnTwitter(score: number, displayName: string) {
+export function shareOnTwitter(score: number) {
   const text = `🎉 My AuraScore is ${score}/100! 🚀\n\nCheck your onchain reputation score now! 📊\n\n#AuraScore #Web3 #Crypto #OnchainAnalytics\n\nhttps://aurascore.vercel.app`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     text

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isValidEthereumAddress } from "../../utils/validation";
+import { checkRateLimit, getRateLimitResponse } from "../../utils/rateLimit";
 
 interface RequestBody {
   walletAddress: string;
@@ -6,6 +8,15 @@ interface RequestBody {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || 
+               request.headers.get("x-real-ip") || 
+               "unknown";
+    const rateLimit = checkRateLimit(ip);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(getRateLimitResponse(rateLimit.resetIn), { status: 429 });
+    }
+
     // Parse the request body
     const body: RequestBody = await request.json();
     const { walletAddress } = body;
@@ -14,6 +25,14 @@ export async function POST(request: NextRequest) {
     if (!walletAddress) {
       return NextResponse.json(
         { error: "Address is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate wallet address format
+    if (!isValidEthereumAddress(walletAddress)) {
+      return NextResponse.json(
+        { error: "Invalid Ethereum address format" },
         { status: 400 }
       );
     }
@@ -34,6 +53,7 @@ export async function POST(request: NextRequest) {
       headers: {
         "X-API-Key": moralisApiKey,
       },
+      next: { revalidate: 3600 },
     });
 
     // Handle API response

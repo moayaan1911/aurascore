@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
         accept: "application/json",
         "X-API-Key": moralisApiKey,
       },
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {

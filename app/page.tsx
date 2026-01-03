@@ -8,7 +8,12 @@ import Background3D from "./components/Background3D";
 import Header from "./components/Header";
 import Features from "./components/Features";
 import Footer from "./components/Footer";
-import { FaSearch, FaArrowRight, FaSpinner } from "react-icons/fa";
+import {
+  FaSearch,
+  FaArrowRight,
+  FaSpinner,
+  FaInfoCircle,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function Home() {
@@ -18,44 +23,52 @@ export default function Home() {
 
   // Resolve ENS domain to address
   const resolveENS = async (domain: string): Promise<string | null> => {
-    try {
-      const response = await fetch("/api/resolve-ens", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domain }),
-      });
+    const response = await fetch("/api/resolve-ens", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ domain }),
+      cache: "force-cache",
+    });
 
-      if (!response.ok) {
-        throw new Error("Failed to resolve ENS domain");
+    if (!response.ok) {
+      if (response.status === 429) {
+        const err = await response.json().catch(() => ({}));
+        toast.error(
+          err?.error ||
+            "Rate limit exceeded! You can only make 2 requests per 60 seconds."
+        );
+        throw new Error("RATE_LIMITED");
       }
-
-      const data = await response.json();
-      return data.address || null;
-    } catch (error) {
-      console.error("Error resolving ENS domain:", error);
-      return null;
+      throw new Error("Failed to resolve ENS domain");
     }
+
+    const data = await response.json();
+    return data.address || null;
   };
 
   // Resolve Unstoppable domain to address
   const resolveUnstoppable = async (domain: string): Promise<string | null> => {
-    try {
-      const response = await fetch("/api/resolve-unstoppable", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domain }),
-      });
+    const response = await fetch("/api/resolve-unstoppable", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ domain }),
+      cache: "force-cache",
+    });
 
-      if (!response.ok) {
-        throw new Error("Failed to resolve Unstoppable domain");
+    if (!response.ok) {
+      if (response.status === 429) {
+        const err = await response.json().catch(() => ({}));
+        toast.error(
+          err?.error ||
+            "Rate limit exceeded! You can only make 2 requests per 60 seconds."
+        );
+        throw new Error("RATE_LIMITED");
       }
-
-      const data = await response.json();
-      return data.address || null;
-    } catch (error) {
-      console.error("Error resolving Unstoppable domain:", error);
-      return null;
+      throw new Error("Failed to resolve Unstoppable domain");
     }
+
+    const data = await response.json();
+    return data.address || null;
   };
 
   const handleFetchScore = async () => {
@@ -116,6 +129,12 @@ export default function Home() {
       // Navigate to summary page with the resolved address
       router.push(`/summary?address=${resolvedAddress}`);
     } catch (error) {
+      toast.dismiss("resolving");
+      // Don't show additional error for rate limiting (already shown)
+      if (error instanceof Error && error.message === "RATE_LIMITED") {
+        setIsLoading(false);
+        return;
+      }
       console.error("Error:", error);
       toast.error("Something went wrong. Please try again.");
       setIsLoading(false);
@@ -224,6 +243,11 @@ export default function Home() {
                   </>
                 )}
               </button>
+            </div>
+            {/* Disclaimer */}
+            <div className="flex items-center justify-center gap-2 mt-3 text-gray-400 text-sm">
+              <FaInfoCircle className="text-[#00ff88]" />
+              <span>Only EVM addresses supported</span>
             </div>
           </motion.div>
 

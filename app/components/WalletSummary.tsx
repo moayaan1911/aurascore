@@ -198,7 +198,7 @@ export default function WalletSummary({
           <div
             key={index}
             className="flex items-start gap-4 p-3 transition-all duration-300 group">
-            <div className="flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
+            <div className="shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300">
               {item.icon}
             </div>
             <p

@@ -29,15 +29,13 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## TODO - Before Deployment
+## Security & Scalability Features
 
-Before deploying to production, implement these security and scalability improvements for `/api/get-chain-activity`:
+The following security and scalability improvements have been implemented:
 
-- [ ] **Wallet Address Validation** - Validate that walletAddress is a valid Ethereum address format (0x + 40 hex characters)
-- [ ] **Caching** - Use Next.js built-in Data Cache with `revalidate` option in fetch call (e.g., `next: { revalidate: 300 }`) to cache responses for 5 minutes
-- [ ] **Request Timeout** - Add timeout to fetch call to prevent hanging requests and resource exhaustion
-- [ ] **Rate Limiting** - Implement rate limiting per IP/user to prevent abuse and unexpected API costs
-- [ ] **API Key Exposure Prevention** - Sanitize error messages to prevent accidental leakage of sensitive data from Moralis responses
+- [x] **Wallet Address Validation** - Validates that walletAddress is a valid Ethereum address format (0x + 40 hex characters)
+- [x] **Caching** - Uses Next.js built-in Data Cache with `revalidate: 3600` (1 hour cache) for all Moralis API calls
+- [x] **Rate Limiting** - Implements rate limiting (2 requests per 60 seconds per IP) to prevent abuse and unexpected API costs
 
 ## Deploy on Vercel
 

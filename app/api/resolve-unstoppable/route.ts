@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
         accept: "application/json",
         "X-API-Key": moralisApiKey,
       },
+      next: { revalidate: 3600 },
     });
 
     // If domain not found or any error from Moralis, return null address (not an error)

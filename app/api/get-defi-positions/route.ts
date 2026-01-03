@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isValidEthereumAddress } from "../../utils/validation";
 
 interface RequestBody {
   walletAddress: string;
@@ -17,6 +18,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!isValidEthereumAddress(walletAddress)) {
+      return NextResponse.json(
+        { error: "Invalid Ethereum address format" },
+        { status: 400 }
+      );
+    }
+
     const moralisApiKey = process.env.MORALIS_API_KEY;
     if (!moralisApiKey) {
       return NextResponse.json(
@@ -31,6 +39,7 @@ export async function POST(request: NextRequest) {
       headers: {
         "X-API-Key": moralisApiKey,
       },
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {

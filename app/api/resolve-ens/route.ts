@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     }
 
     const moralisApiKey = process.env.MORALIS_API_KEY;
-    console.log("Moralis API key:", moralisApiKey);
+    // console.log("Moralis API key:", moralisApiKey);
     if (!moralisApiKey) {
       return NextResponse.json(
         { error: "Moralis API key is not configured" },
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const url = `https://deep-index.moralis.io/api/v2.2/resolve/ens/${domain}`;
-    console.log("Resolving ENS domain:", domain, "URL:", url);
+    // console.log("Resolving ENS domain:", domain, "URL:", url);
 
     const response = await fetch(url, {
       method: "GET",
@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
         accept: "application/json",
         "X-API-Key": moralisApiKey,
       },
+      next: { revalidate: 3600 },
     });
 
     // If domain not found or any error from Moralis, return null address (not an error)

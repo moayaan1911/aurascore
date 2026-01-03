@@ -88,9 +88,18 @@ function SummaryContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
+        cache: "force-cache",
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
+        
+        // Show toast for rate limit errors
+        if (res.status === 429) {
+          toast.error(err?.error || "Rate limit exceeded! You can only make 2 requests per 60 seconds.", {
+            duration: 6000,
+          });
+        }
+        
         throw new Error(err?.error || `Failed ${endpoint}`);
       }
       return res.json();
@@ -440,7 +449,9 @@ function SummaryContent() {
     }
 
     try {
-      toast.loading("Generating your AuraScore PDF...", { id: "pdf-generation" });
+      toast.loading("Generating your AuraScore PDF...", {
+        id: "pdf-generation",
+      });
       await generateAuraScorePDF(
         walletAddress,
         displayName,
@@ -448,24 +459,29 @@ function SummaryContent() {
         summaryData,
         heatmapData
       );
-      toast.success("PDF downloaded successfully! 🎉", { id: "pdf-generation", duration: 4000 });
-      
+      toast.success("PDF downloaded successfully! 🎉", {
+        id: "pdf-generation",
+        duration: 4000,
+      });
+
       // Trigger confetti
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#00ff88', '#00cc6a', '#00aa55', '#ffffff'],
+        colors: ["#00ff88", "#00cc6a", "#00aa55", "#ffffff"],
       });
     } catch (error) {
       console.error("Error generating PDF:", error);
-      toast.error("Failed to generate PDF. Please try again.", { id: "pdf-generation" });
+      toast.error("Failed to generate PDF. Please try again.", {
+        id: "pdf-generation",
+      });
     }
   };
 
   const handleShareOnTwitter = () => {
     try {
-      shareOnTwitter(score, displayName);
+      shareOnTwitter(score);
       toast.success("Share your AuraScore on X! 🐦", { duration: 3000 });
       confetti({
         particleCount: 100,
@@ -483,7 +499,10 @@ function SummaryContent() {
     try {
       toast.loading("Generating your share image...", { id: "image-gen" });
       await downloadShareImage(walletAddress, displayName, score, avatarUrl);
-      toast.success("Image downloaded successfully! 🎨", { id: "image-gen", duration: 4000 });
+      toast.success("Image downloaded successfully! 🎨", {
+        id: "image-gen",
+        duration: 4000,
+      });
       confetti({
         particleCount: 100,
         spread: 70,
@@ -492,7 +511,9 @@ function SummaryContent() {
       });
     } catch (error) {
       console.error("Error generating image:", error);
-      toast.error("Failed to generate image. Please try again.", { id: "image-gen" });
+      toast.error("Failed to generate image. Please try again.", {
+        id: "image-gen",
+      });
     }
   };
 
