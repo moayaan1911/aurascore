@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { FiDownload, FiX } from "react-icons/fi";
+import { FiDownload, FiX, FiImage } from "react-icons/fi";
 import { FaSpinner } from "react-icons/fa";
 import makeBlockie from "ethereum-blockies-base64";
 import Background3D from "../components/Background3D";
@@ -11,6 +11,10 @@ import Score from "../components/Score";
 import Heatmap from "../components/Heatmap";
 import Footer from "../components/Footer";
 import { generateAuraScorePDF } from "../utils/generatePDF";
+import {
+  downloadShareImage,
+  shareOnTwitter,
+} from "../utils/generateShareImage";
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
 
@@ -459,6 +463,39 @@ function SummaryContent() {
     }
   };
 
+  const handleShareOnTwitter = () => {
+    try {
+      shareOnTwitter(score, displayName);
+      toast.success("Share your AuraScore on X! 🐦", { duration: 3000 });
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#00ff88", "#ffffff", "#00cc66"],
+      });
+    } catch (error) {
+      console.error("Error opening Twitter:", error);
+      toast.error("Failed to open Twitter. Please try again.");
+    }
+  };
+
+  const handleDownloadImage = async () => {
+    try {
+      toast.loading("Generating your share image...", { id: "image-gen" });
+      await downloadShareImage(walletAddress, displayName, score, avatarUrl);
+      toast.success("Image downloaded successfully! 🎨", { id: "image-gen", duration: 4000 });
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#00ff88", "#ffffff", "#00cc66"],
+      });
+    } catch (error) {
+      console.error("Error generating image:", error);
+      toast.error("Failed to generate image. Please try again.", { id: "image-gen" });
+    }
+  };
+
   if (loading) {
     return (
       <main className="min-h-screen relative flex flex-col font-sans text-white overflow-hidden selection:bg-[#00ff88] selection:text-black">
@@ -513,21 +550,33 @@ function SummaryContent() {
           <button
             onClick={handleDownloadPDF}
             className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group cursor-pointer overflow-hidden min-w-[48px]"
-            aria-label="Download">
+            aria-label="Download PDF">
             <div className="flex items-center gap-0 group-hover:gap-3 transition-all duration-300">
               <FiDownload className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors shrink-0" />
               <span className="text-sm font-medium text-gray-400 group-hover:text-[#00ff88] transition-all whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 duration-300 overflow-hidden">
-                Download PDF Report of AuraScore
+                Download PDF Report
               </span>
             </div>
           </button>
           <button
+            onClick={handleDownloadImage}
+            className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group cursor-pointer overflow-hidden min-w-[48px]"
+            aria-label="Download Image">
+            <div className="flex items-center gap-0 group-hover:gap-3 transition-all duration-300">
+              <FiImage className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors shrink-0" />
+              <span className="text-sm font-medium text-gray-400 group-hover:text-[#00ff88] transition-all whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 duration-300 overflow-hidden">
+                Download Share Image
+              </span>
+            </div>
+          </button>
+          <button
+            onClick={handleShareOnTwitter}
             className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group cursor-pointer overflow-hidden min-w-[48px]"
             aria-label="Share on X">
             <div className="flex items-center gap-0 group-hover:gap-3 transition-all duration-300">
               <FiX className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors shrink-0" />
               <span className="text-sm font-medium text-gray-400 group-hover:text-[#00ff88] transition-all whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 duration-300 overflow-hidden">
-                Share my AuraScore
+                Share on X
               </span>
             </div>
           </button>
