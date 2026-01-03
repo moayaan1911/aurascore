@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FaCopyright, FaEthereum } from "react-icons/fa";
 
 export default function Footer() {
@@ -13,7 +14,7 @@ export default function Footer() {
             reserved.
           </span>
         </div>
-        <a
+        <Link
           href="https://moayaan.com"
           target="_blank"
           rel="noopener noreferrer"
@@ -21,7 +22,7 @@ export default function Footer() {
           <FaEthereum className="w-4 h-4" />
           <span>Built by moayaan.eth</span>
           <FaEthereum className="w-4 h-4" />
-        </a>
+        </Link>
       </div>
     </footer>
   );

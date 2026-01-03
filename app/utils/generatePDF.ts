@@ -66,11 +66,11 @@ export async function generateAuraScorePDF(
       const activeDays = data.counts.filter((c) => c > 0).length;
       return `
         <tr>
-          <td style="color: #00ff88; font-weight: bold;">${month}</td>
-          <td>${totalTxs}</td>
-          <td>${avgTxs}</td>
-          <td>${maxTxs}</td>
-          <td>${activeDays}/${data.counts.length}</td>
+          <td style="width: 20%; color: #00ff88; font-weight: bold; padding: 10px; text-align: left;">${month}</td>
+          <td style="width: 20%; padding: 10px; text-align: center; color: #fff;">${totalTxs}</td>
+          <td style="width: 20%; padding: 10px; text-align: center; color: #fff;">${avgTxs}</td>
+          <td style="width: 20%; padding: 10px; text-align: center; color: #fff;">${maxTxs}</td>
+          <td style="width: 20%; padding: 10px; text-align: center; color: #fff;">${activeDays}/${data.counts.length}</td>
         </tr>
       `;
     })
@@ -95,7 +95,7 @@ export async function generateAuraScorePDF(
             <a href="https://moayaan.com" style="font-size: 10px; color: #9ca3af; text-decoration: underline;">Built by moayaan.eth</a>
           </div>
           <div style="text-align: center; flex: 1;">
-            <div style="font-size: 9px; color: #fff;">Generated on ${new Date().toLocaleString()}</div>
+            <div style="font-size: 11px; color: #fff;">Generated on ${new Date().toLocaleString()}</div>
           </div>
           <div style="font-size: 10px; color: #9ca3af;">Page 1 of 2</div>
         </div>
@@ -124,7 +124,7 @@ export async function generateAuraScorePDF(
         <div style="background: #0a0f0d; border-radius: 10px; padding: 15px; margin-bottom: 15px; border: 1px solid #00aa55;">
           <div style="font-size: 13px; font-weight: bold; color: #00ff88; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #00aa55;">📊 Wallet Summary</div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">🌐</span>
             <span style="color: #9ca3af; width: 130px;">Chains Transacted:</span>
             <span style="color: #fff; font-weight: bold;">${
@@ -134,13 +134,13 @@ export async function generateAuraScorePDF(
   })</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">📈</span>
             <span style="color: #9ca3af; width: 130px;">Total Transactions:</span>
             <span style="color: #fff; font-weight: bold;">${summaryData.totalTransactions.toLocaleString()}</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">🔥</span>
             <span style="color: #9ca3af; width: 130px;">Most Active Chain:</span>
             <span style="color: #00ff88; font-weight: bold;">${summaryData.highestChainTransactions.chain.toUpperCase()} (${
@@ -148,7 +148,7 @@ export async function generateAuraScorePDF(
   } txs)</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">📅</span>
             <span style="color: #9ca3af; width: 130px;">First Transaction:</span>
             <span style="color: #fff; font-weight: bold;">${
@@ -156,7 +156,7 @@ export async function generateAuraScorePDF(
             } on ${summaryData.firstTransaction.chain.toUpperCase()}</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">⏳</span>
             <span style="color: #9ca3af; width: 130px;">Wallet Age:</span>
             <span style="color: #fff; font-weight: bold;">${
@@ -164,7 +164,7 @@ export async function generateAuraScorePDF(
             }</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">⚠️</span>
             <span style="color: #9ca3af; width: 130px;">USD at Risk:</span>
             <span style="color: #00ff88; font-weight: bold;">$${summaryData.usdAtRisk.toFixed(
@@ -172,7 +172,7 @@ export async function generateAuraScorePDF(
             )}</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">🏦</span>
             <span style="color: #9ca3af; width: 130px;">DeFi Protocols:</span>
             <span style="color: #fff; font-weight: bold;">${
@@ -185,7 +185,7 @@ export async function generateAuraScorePDF(
           ${
             summaryData.highestDefiPosition
               ? `
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">💎</span>
             <span style="color: #9ca3af; width: 130px;">Top DeFi Position:</span>
             <span style="color: #00ff88; font-weight: bold;">${
@@ -203,7 +203,7 @@ export async function generateAuraScorePDF(
         <div style="background: #0a0f0d; border-radius: 10px; padding: 15px; margin-bottom: 15px; border: 1px solid #00aa55;">
           <div style="font-size: 13px; font-weight: bold; color: #00ff88; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #00aa55;">💰 Financial Summary</div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">💵</span>
             <span style="color: #9ca3af; width: 130px;">Total Net Worth:</span>
             <span style="color: #00ff88; font-weight: bold;">$${summaryData.totalNetWorth.total.toFixed(
@@ -211,7 +211,7 @@ export async function generateAuraScorePDF(
             )}</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">🏆</span>
             <span style="color: #9ca3af; width: 130px;">Highest Worth Chain:</span>
             <span style="color: #fff; font-weight: bold;">${
@@ -221,7 +221,7 @@ export async function generateAuraScorePDF(
   )})</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">⛽</span>
             <span style="color: #9ca3af; width: 130px;">Total Gas Fees:</span>
             <span style="color: #fff; font-weight: bold;">$${summaryData.totalGasFees.total.toFixed(
@@ -229,7 +229,7 @@ export async function generateAuraScorePDF(
             )}</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">📊</span>
             <span style="color: #9ca3af; width: 130px;">Total Trades:</span>
             <span style="color: #fff; font-weight: bold;">${
@@ -237,7 +237,7 @@ export async function generateAuraScorePDF(
             }</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 6px; font-size: 9px;">
+          <div style="display: flex; margin-bottom: 6px; font-size: 11px;">
             <span style="color: #00ff88; width: 22px; font-weight: bold;">📈</span>
             <span style="color: #9ca3af; width: 130px;">Total Profit:</span>
             <span style="color: ${
@@ -258,7 +258,7 @@ export async function generateAuraScorePDF(
             <a href="https://moayaan.com" style="font-size: 10px; color: #9ca3af; text-decoration: underline;">Built by moayaan.eth</a>
           </div>
           <div style="text-align: center; flex: 1;">
-            <div style="font-size: 9px; color: #fff;">Generated on ${new Date().toLocaleString()}</div>
+            <div style="font-size: 11px; color: #fff;">Generated on ${new Date().toLocaleString()}</div>
           </div>
           <div style="font-size: 10px; color: #9ca3af;">Page 2 of 2</div>
         </div>
@@ -267,14 +267,14 @@ export async function generateAuraScorePDF(
         <div style="background: #0a0f0d; border-radius: 10px; padding: 20px; margin-bottom: 20px; border: 1px solid #00aa55;">
           <div style="font-size: 14px; font-weight: bold; color: #00ff88; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #00aa55;">🔥 Transaction Heatmap (Last 365 Days)</div>
           
-          <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px; table-layout: fixed;">
             <thead>
               <tr style="background: #00ff88; color: #000;">
-                <th style="padding: 10px; text-align: left; font-weight: bold;">Month</th>
-                <th style="padding: 10px; text-align: center; font-weight: bold;">Total Txs</th>
-                <th style="padding: 10px; text-align: center; font-weight: bold;">Avg/Day</th>
-                <th style="padding: 10px; text-align: center; font-weight: bold;">Max/Day</th>
-                <th style="padding: 10px; text-align: center; font-weight: bold;">Active Days</th>
+                <th style="width: 20%; padding: 10px; text-align: left; font-weight: bold;">Month</th>
+                <th style="width: 20%; padding: 10px; text-align: center; font-weight: bold;">Total Txs</th>
+                <th style="width: 20%; padding: 10px; text-align: center; font-weight: bold;">Avg/Day</th>
+                <th style="width: 20%; padding: 10px; text-align: center; font-weight: bold;">Max/Day</th>
+                <th style="width: 20%; padding: 10px; text-align: center; font-weight: bold;">Active Days</th>
               </tr>
             </thead>
             <tbody>
@@ -287,12 +287,12 @@ export async function generateAuraScorePDF(
         <div style="background: #0a0f0d; border-radius: 10px; padding: 20px; border: 2px solid #00ff88;">
           <div style="font-size: 14px; font-weight: bold; color: #00ff88; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #00aa55;">📊 Yearly Activity Summary</div>
           
-          <div style="display: flex; margin-bottom: 8px;">
+          <div style="display: flex; margin-bottom: 8px; font-size: 11px;">
             <span style="color: #9ca3af; width: 200px;">Total Transactions (365 days):</span>
             <span style="color: #fff; font-weight: bold;">${totalYearTxs.toLocaleString()}</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 8px;">
+          <div style="display: flex; margin-bottom: 8px; font-size: 11px;">
             <span style="color: #9ca3af; width: 200px;">Active Days:</span>
             <span style="color: #fff; font-weight: bold;">${activeDaysTotal}/365 (${(
     (activeDaysTotal / 365) *
@@ -300,7 +300,7 @@ export async function generateAuraScorePDF(
   ).toFixed(1)}%)</span>
           </div>
           
-          <div style="display: flex; margin-bottom: 8px;">
+          <div style="display: flex; margin-bottom: 8px; font-size: 11px;">
             <span style="color: #9ca3af; width: 200px;">Most Active Day:</span>
             <span style="color: #00ff88; font-weight: bold;">${maxDayTxs} transactions</span>
           </div>

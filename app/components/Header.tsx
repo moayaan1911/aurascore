@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { SiPeerlist } from "react-icons/si";
 import { motion } from "framer-motion";
@@ -49,7 +50,7 @@ export default function Header({ itemVariants }: HeaderProps) {
 
       {/* Social Icons */}
       <div className="flex items-center gap-4 mt-4">
-        <a
+        <Link
           href="https://github.com/moayaan1911/aurascore"
           target="_blank"
           rel="noopener noreferrer"
@@ -60,8 +61,8 @@ export default function Header({ itemVariants }: HeaderProps) {
               Leave a Star
             </span>
           </div>
-        </a>
-        <a
+        </Link>
+        <Link
           href="https://peerlist.io/ayaaneth/project/aurascore"
           target="_blank"
           rel="noopener noreferrer"
@@ -72,7 +73,7 @@ export default function Header({ itemVariants }: HeaderProps) {
               Upvote on Peerlist
             </span>
           </div>
-        </a>
+        </Link>
       </div>
     </motion.div>
   );
