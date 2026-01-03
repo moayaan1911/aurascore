@@ -42,15 +42,15 @@ export default function Header({ itemVariants }: HeaderProps) {
       </div>
 
       <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto mb-6">
-        Unlock your onchain reputation with AuraScore. Track your
-        wallet&apos;s activity, DeFi engagement, transaction history, and
-        cross-chain presence—all in one comprehensive score.
+        Unlock your onchain reputation with AuraScore. Track your wallet&apos;s
+        activity, DeFi engagement, transaction history, and cross-chain
+        presence—all in one comprehensive score.
       </p>
 
       {/* Social Icons */}
       <div className="flex items-center gap-4 mt-4">
         <a
-          href="https://github.com"
+          href="https://github.com/moayaan1911/aurascore"
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group overflow-hidden min-w-[48px]">
@@ -62,7 +62,7 @@ export default function Header({ itemVariants }: HeaderProps) {
           </div>
         </a>
         <a
-          href="https://peerlist.io"
+          href="https://peerlist.io/ayaaneth/project/aurascore"
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group overflow-hidden min-w-[48px]">
@@ -77,4 +77,3 @@ export default function Header({ itemVariants }: HeaderProps) {
     </motion.div>
   );
 }
-
