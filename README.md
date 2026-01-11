@@ -26,7 +26,7 @@ Happy coding, fam! 😎✨
 > **Unlock Your Onchain Reputation**  
 > Track your wallet's activity, DeFi engagement, transaction history, and cross-chain presence—all in one comprehensive score.
 
-<a href="https://youtube.com" target="_blank">
+<a href="https://youtu.be/xnDc7OB0KZc?si=vpa1HbGpMG-UV5X5" target="_blank">
   <img src="https://img.shields.io/badge/Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch Demo" height="30" />
 </a>
 

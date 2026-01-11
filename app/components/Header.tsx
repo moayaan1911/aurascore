@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaYoutube } from "react-icons/fa";
 import { SiPeerlist } from "react-icons/si";
 import { motion } from "framer-motion";
 
@@ -63,7 +63,7 @@ export default function Header({ itemVariants }: HeaderProps) {
           </div>
         </Link>
         <Link
-          href="https://peerlist.io/ayaaneth/project/aurascore"
+          href="https://peerlist.io/ayaaneth/project/aurascore--your-onchain-score"
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group overflow-hidden min-w-[48px]">
@@ -71,6 +71,18 @@ export default function Header({ itemVariants }: HeaderProps) {
             <SiPeerlist className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors shrink-0" />
             <span className="text-sm font-medium text-gray-400 group-hover:text-[#00ff88] transition-all whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 duration-300 overflow-hidden">
               Upvote on Peerlist
+            </span>
+          </div>
+        </Link>
+        <Link
+          href="https://youtu.be/xnDc7OB0KZc?si=vpa1HbGpMG-UV5X5"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative flex items-center justify-center p-3 bg-white/5 rounded-full border border-white/10 hover:border-[#00ff88] hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] group overflow-hidden min-w-[48px]">
+          <div className="flex items-center gap-0 group-hover:gap-3 transition-all duration-300">
+            <FaYoutube className="w-6 h-6 text-gray-400 group-hover:text-[#00ff88] transition-colors shrink-0" />
+            <span className="text-sm font-medium text-gray-400 group-hover:text-[#00ff88] transition-all whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 duration-300 overflow-hidden">
+              Watch Demo
             </span>
           </div>
         </Link>
